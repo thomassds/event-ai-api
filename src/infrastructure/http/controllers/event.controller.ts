@@ -1,11 +1,15 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
 import {
   CreateEventUseCase,
   ListUpcomingEventsUseCase,
+  GetEventBySlugUseCase,
+  UpdateEventUseCase,
 } from '../../../application/useCases';
 import {
   CreateEventDto,
   ListUpcomingEventsDto,
+  GetEventBySlugParamsDto,
+  UpdateEventDto,
 } from '../../../interfaces/dtos';
 
 @Controller('events')
@@ -13,6 +17,8 @@ export class EventController {
   constructor(
     private readonly createEventUseCase: CreateEventUseCase,
     private readonly listUpcomingEventsUseCase: ListUpcomingEventsUseCase,
+    private readonly getEventBySlugUseCase: GetEventBySlugUseCase,
+    private readonly updateEventUseCase: UpdateEventUseCase,
   ) {}
 
   @Post()
@@ -33,6 +39,25 @@ export class EventController {
     return {
       success: true,
       ...result,
+    };
+  }
+
+  @Get(':slug')
+  async getBySlug(@Param() params: GetEventBySlugParamsDto) {
+    const data = await this.getEventBySlugUseCase.execute(params.slug);
+    return {
+      success: true,
+      data,
+    };
+  }
+
+  @Put(':id')
+  async update(@Param('id') id: string, @Body() dto: UpdateEventDto) {
+    const data = await this.updateEventUseCase.execute(id, dto);
+    return {
+      success: true,
+      data,
+      message: 'Evento atualizado com sucesso',
     };
   }
 }
