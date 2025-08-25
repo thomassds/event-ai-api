@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, Column } from 'typeorm';
 import { BaseEntity } from './base.entity';
 
 export enum EventStatus {
@@ -10,9 +10,6 @@ export enum EventStatus {
 
 @Entity('events')
 export class Event extends BaseEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
   @Column({ type: 'varchar', length: 255, nullable: false })
   name: string;
 
@@ -55,10 +52,4 @@ export class Event extends BaseEntity {
     default: EventStatus.DRAFT,
   })
   status: EventStatus;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
 }

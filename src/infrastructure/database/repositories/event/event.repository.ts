@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { MoreThan, Repository } from 'typeorm';
 import { Event, EventStatus } from '../../../../domain/entities/event.entity';
 import { IEventRepository } from '../../../../domain/repositories/event.repository.interface';
 import { DatabaseException } from '../../../exceptions';
@@ -56,6 +56,24 @@ export class EventRepository
       });
     } catch (error) {
       throw DatabaseException.fromError(error, 'buscar eventos por status');
+    }
+  }
+
+  async listUpcoming(
+    page: number,
+    limit: number,
+    now: Date = new Date(),
+  ): Promise<{ data: Event[]; total: number; page: number; limit: number }> {
+    try {
+      const [data, total] = await this.repository.findAndCount({
+        where: { endAt: MoreThan(now) },
+        order: { startAt: 'ASC' },
+        skip: (page - 1) * limit,
+        take: limit,
+      });
+      return { data, total, page, limit };
+    } catch (error) {
+      throw DatabaseException.fromError(error, 'listar eventos futuros');
     }
   }
 }

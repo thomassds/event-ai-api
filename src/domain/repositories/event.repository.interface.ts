@@ -6,4 +6,9 @@ export interface IEventRepository extends IBaseRepository<Event> {
   findPublicEvents(): Promise<Event[]>;
   findActiveEvents(): Promise<Event[]>;
   findEventsByStatus(status: string): Promise<Event[]>;
+  listUpcoming(
+    page: number,
+    limit: number,
+    now?: Date,
+  ): Promise<{ data: Event[]; total: number; page: number; limit: number }>;
 }
