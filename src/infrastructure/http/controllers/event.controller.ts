@@ -1,9 +1,19 @@
-import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common';
 import {
   CreateEventUseCase,
   ListUpcomingEventsUseCase,
   GetEventBySlugUseCase,
   UpdateEventUseCase,
+  DeleteEventUseCase,
 } from '../../../application/useCases';
 import {
   CreateEventDto,
@@ -19,6 +29,7 @@ export class EventController {
     private readonly listUpcomingEventsUseCase: ListUpcomingEventsUseCase,
     private readonly getEventBySlugUseCase: GetEventBySlugUseCase,
     private readonly updateEventUseCase: UpdateEventUseCase,
+    private readonly deleteEventUseCase: DeleteEventUseCase,
   ) {}
 
   @Post()
@@ -58,6 +69,15 @@ export class EventController {
       success: true,
       data,
       message: 'Evento atualizado com sucesso',
+    };
+  }
+
+  @Delete(':id')
+  async delete(@Param('id') id: string) {
+    await this.deleteEventUseCase.execute(id);
+    return {
+      success: true,
+      message: 'Evento removido com sucesso',
     };
   }
 }

@@ -6,6 +6,7 @@ import {
   ListUpcomingEventsService,
   GetEventBySlugService,
   UpdateEventService,
+  DeleteEventService,
 } from './services';
 import {
   CreateUserUseCase,
@@ -13,6 +14,7 @@ import {
   ListUpcomingEventsUseCase,
   GetEventBySlugUseCase,
   UpdateEventUseCase,
+  DeleteEventUseCase,
 } from './useCases';
 
 @Module({
@@ -28,6 +30,8 @@ import {
     GetEventBySlugUseCase,
     UpdateEventService,
     UpdateEventUseCase,
+    DeleteEventService,
+    DeleteEventUseCase,
   ],
   exports: [
     CreateUserUseCase,
@@ -40,6 +44,8 @@ import {
     GetEventBySlugUseCase,
     UpdateEventService,
     UpdateEventUseCase,
+    DeleteEventService,
+    DeleteEventUseCase,
   ],
 })
 export class ApplicationModule {}
